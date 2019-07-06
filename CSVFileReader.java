@@ -3,7 +3,9 @@ package beca.java.everis;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,11 +41,17 @@ public class CSVFileReader {
 		}
 	}
 
-	private void imprimirOrdenadoPorIbsn(Set<Book> books) {
-		System.out.println("---Impressão ordenado---");
+	private void imprimirOrdenadoPorIbsn(Set<Book> books) throws IOException {
+		
+		String dir = System.getProperty("user.dir");
+		FileWriter arq = new FileWriter(dir+"/lista.txt");
+	    PrintWriter gravarArq = new PrintWriter(arq);
+	    gravarArq.printf("---Impressão ordenado---%n");
 		books.stream().sorted(Comparator.comparing(Book::getIsbn))
-				.forEach(e -> System.out.println("\n--------------------------------\nTitulo: " + e.getTitle()
-						+ "\nAutor: " + e.getAuthor() + "\nISBN: " + e.getIsbn() + "\nAno: " + e.getYear()));
+				.forEach(e -> gravarArq.printf("Titulo: " + e.getTitle()
+						+ "%nAutor: " + e.getAuthor() + "%nISBN: " + e.getIsbn() + "%nAno: " + e.getYear()
+						+"%n--------------------------------%n"));
+		arq.close();
 	}
 
 }
